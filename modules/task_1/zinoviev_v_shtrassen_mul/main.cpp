@@ -6,27 +6,30 @@
 
 double* matrix_sum(double* A, double* B, int size) {
   double * C = new double[size];
-  for (int i = 0; i < size; ++i)
+  for (int i = 0; i < size; ++i) {
     C[i] = A[i] + B[i];
+  }
   return C;
 }
 
 double* matrix_sub(double* A, double* B, int size) {
   double * C = new double[size];
-  for (int i = 0; i < size; ++i)
+  for (int i = 0; i < size; ++i) {
     C[i] = A[i] - B[i];
+  }
   return C;
 }
 
 double* matrix_mul(double* A, double* B, int n) {
   int size = n*n;
   double * C = new double[size];
-  for (int i = 0; i < n; ++i)
+  for (int i = 0; i < n; ++i) {
     for (int j = 0; j < n; ++j) {
       C[i*n + j] = 0;
       for (int k = 0; k < n; ++k)
         C[i*n + j] += A[i*n + k] * B[k*n + j];
     }
+  }
   return C;
 }
 
@@ -41,7 +44,7 @@ double* shtrassen_mul(double* A, double* B, int n) {
       B_[k] = new double[size_4];
     }
 
-    for (int i = 0; i < n_2; ++i)
+    for (int i = 0; i < n_2; ++i) {
       for (int j = 0; j < n_2; ++j) {
         A_[0][i*n_2 + j] = A[i*n + j];                      // A_11
         A_[1][i*n_2 + j] = A[i*n + j + n / 2];              // A_12
@@ -52,6 +55,7 @@ double* shtrassen_mul(double* A, double* B, int n) {
         B_[2][i*n_2 + j] = B[(i + n / 2) * n + j];          // B_21
         B_[3][i*n_2 + j] = B[(i + n / 2) * n + j + n / 2];  // B_22
       }
+    }
 
     double ** P = new double*[7];
     for (int k = 0; k < 7; ++k) {
@@ -101,9 +105,8 @@ double* shtrassen_mul(double* A, double* B, int n) {
 
 double* expand_shtrassen(double* A, double* B, int n) {
   if (n > 450) {
-    int size_pow = 8;
     int check_pow[8] = { 128, 256, 512, 1024, 2048, 4096, 8192, 16384 };
-    int new_size;
+    int new_size = 0;
     for (int i = 0; i < n; ++i) {
       if (check_pow[i] == n) {
         return shtrassen_mul(A, B, n);
@@ -117,24 +120,27 @@ double* expand_shtrassen(double* A, double* B, int n) {
     double* new_A = new double[new_size*new_size];
     double* new_B = new double[new_size*new_size];
 
-    for (int i = 0; i < new_size; ++i)
-      for (int j = 0; j < new_size; ++j)
+    for (int i = 0; i < new_size; ++i) {
+      for (int j = 0; j < new_size; ++j) {
         if (i < n && j < n) {
           new_A[i*new_size + j] = A[i*n + j];
           new_B[i*new_size + j] = B[i*n + j];
-        } else {
+        }
+        else {
           new_A[i*new_size + j] = 0.0;
           new_B[i*new_size + j] = 0.0;
         }
-        double* res_s;
-        res_s = shtrassen_mul(new_A, new_B, new_size);
+      }
+    }
+    double* res_s = nullptr;
+    res_s = shtrassen_mul(new_A, new_B, new_size);
 
-        double* aligned_mat = new double[n*n];
-        for (int i = 0; i < n; ++i)
-          for (int j = 0; j < n; ++j)
-            aligned_mat[i*n + j] = res_s[i*new_size + j];
+    double* aligned_mat = new double[n*n];
+    for (int i = 0; i < n; ++i)
+      for (int j = 0; j < n; ++j)
+        aligned_mat[i*n + j] = res_s[i*new_size + j];
 
-        return aligned_mat;
+    return aligned_mat;
   } else {
     return matrix_mul(A, B, n);
   }
@@ -197,8 +203,8 @@ int main(int argc, char** argv) {
   }
   std::cout << "matrix is generated" << std::endl << std::endl;
 
-  double* res_mul;
-  double* res_shtrass_seq;
+  double* res_mul = nullptr;
+  double* res_shtrass_seq = nullptr;
 
   std::cout << "usual multiplicating..." << std::endl;
   auto s = omp_get_wtime();
