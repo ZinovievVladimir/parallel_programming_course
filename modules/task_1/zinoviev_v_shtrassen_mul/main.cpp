@@ -125,8 +125,7 @@ double* expand_shtrassen(double* A, double* B, int n) {
         if (i < n && j < n) {
           new_A[i*new_size + j] = A[i*n + j];
           new_B[i*new_size + j] = B[i*n + j];
-        }
-        else {
+        } else {
           new_A[i*new_size + j] = 0.0;
           new_B[i*new_size + j] = 0.0;
         }
