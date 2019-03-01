@@ -1,4 +1,4 @@
-set(PROJECT_NAME "zinoviev_v_shtrassen_mul")
+set(PROJECT_NAME "zinoviev_v_shtrassen_mul_omp")
 
 if ( USE_OMP )
     project( ${PROJECT_NAME} )
