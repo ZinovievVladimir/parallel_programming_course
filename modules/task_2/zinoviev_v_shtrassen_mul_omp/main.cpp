@@ -306,15 +306,11 @@ double random<double>(double lower_bound, double upper_bound) {
 }
 
 int main(int argc, char** argv) {
-  // std::ofstream myfile;
-  // myfile.open("example.txt");
-
-  // for (int n = 50; n < 2000; n += 50) {
   int n = 0;
   if (argc > 1) {
     n = atoi(argv[1]);
   } else {
-    n = 3000;//random<int>(500, 1000);
+    n = random<int>(500, 1000);
   }
   std::cout << "n = " << n << std::endl;
   int size = n * n;
@@ -376,9 +372,4 @@ int main(int argc, char** argv) {
       << "time of sequent shtrassen:" << shtrass_seq_t << std::endl
       << "time of parallel omp shtrassen:" << shtrass_omp_t << std::endl;
   }
-
-  //  myfile << n << ";" << mul_t << ";" << shtrass_seq_t << ";" << shtrass_omp_t << ";" << std::endl;
- //}
-
- // myfile.close();
 }
