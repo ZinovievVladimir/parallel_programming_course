@@ -1,9 +1,9 @@
 // Copyright 2019 Zinoviev Vladimir
 
 #include <omp.h>
+#include <tbb/tbb.h>
 #include <iostream>
 #include <random>
-#include <tbb/tbb.h>
 
 inline double* matrix_sum(double* A, double* B, int size) {
   double * C = new double[size];
@@ -415,10 +415,14 @@ bool check(double* A, double* B, int size, int* num, double eps) {
 
 int main(int argc, char** argv) {
   int n = 0;
+
+  std::default_random_engine rd;
+  std::uniform_int_distribution<int> uni_int(500, 1000);
+
   if (argc > 1) {
     n = atoi(argv[1]);
   } else {
-    n = 1000;//random<int>(500, 1000);
+    n = uni_int(rd);
   }
   std::cout << "n = " << n << std::endl;
   int size = n * n;
@@ -427,7 +431,6 @@ int main(int argc, char** argv) {
   double eps = 1e-2;
   std::cout << "matrix generating..." << std::endl;
 
-  std::default_random_engine rd;
   std::uniform_real_distribution<double> uni(0, 100);
 
   for (int i = 0; i < size; ++i) {
@@ -472,7 +475,9 @@ int main(int argc, char** argv) {
 
   int bad1 = -1, bad2 = -1, bad3 = -1;
   std::cout.precision(17);
-  if (check(res_mul, res_shtrass_seq, size, &bad1, eps) && check(res_mul, res_shtrass_omp, size, &bad2, eps) && check(res_mul, res_shtrass_tbb, size, &bad3, eps)) {
+  if (check(res_mul, res_shtrass_seq, size, &bad1, eps) &&
+    check(res_mul, res_shtrass_omp, size, &bad2, eps) &&
+    check(res_mul, res_shtrass_tbb, size, &bad3, eps)) {
     std::cout << "good multiplication!" << std::endl << std::endl
       << "time of usual multiplication: " << mul_t << std::endl
       << "time of sequent shtrassen:" << shtrass_seq_t << std::endl
