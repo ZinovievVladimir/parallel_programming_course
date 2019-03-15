@@ -441,7 +441,7 @@ int main(int argc, char** argv) {
 
   double* res_mul = nullptr;
   double* res_shtrass_seq = nullptr, *res_shtrass_omp = nullptr, *res_shtrass_tbb = nullptr;
-  double mul_t = 0, shtrass_seq_t = 0, shtrass_omp_t = 0, shtrass_tbb_t = 0;
+  double mul_t = 0, shtrass_seq_t = 0, shtrass_omp_t = 0;
 
 
   std::cout << "usual multiplicating..." << std::endl;
