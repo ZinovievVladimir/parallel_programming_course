@@ -463,9 +463,9 @@ int main(int argc, char** argv) {
   std::cout << "done!" << std::endl << std::endl;
 
   std::cout << "shtrassen tbb parallel multiplicating..." << std::endl;
-  tmp = omp_get_wtime();
+  tbb::tick_count t0 = tbb::tick_count::now();
   res_shtrass_tbb = expand_shtrassen_tbb(A, B, n);
-  shtrass_tbb_t = omp_get_wtime() - tmp;
+  tbb::tick_count t1 = tbb::tick_count::now();
   std::cout << "done!" << std::endl << std::endl;
 
   if (n < 10) {
@@ -482,7 +482,7 @@ int main(int argc, char** argv) {
       << "time of usual multiplication: " << mul_t << std::endl
       << "time of sequent shtrassen:" << shtrass_seq_t << std::endl
       << "time of parallel omp shtrassen:" << shtrass_omp_t << std::endl
-      << "time of parallel tbb shtrassen:" << shtrass_tbb_t << std::endl;
+      << "time of parallel tbb shtrassen:" << (t1 - t0).seconds() << std::endl;
   } else {
     if (bad1 != -1) {
       std::cout << "bad multiplication seq! " << bad1 << " elem: "
@@ -499,6 +499,6 @@ int main(int argc, char** argv) {
     std::cout << "time of usual multiplication: " << mul_t << std::endl
       << "time of sequent shtrassen:" << shtrass_seq_t << std::endl
       << "time of parallel omp shtrassen:" << shtrass_omp_t << std::endl
-      << "time of parallel tbb shtrassen:" << shtrass_tbb_t << std::endl;
+      << "time of parallel tbb shtrassen:" << (t1 - t0).seconds() << std::endl;
   }
 }
