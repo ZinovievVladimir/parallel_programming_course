@@ -370,7 +370,7 @@ double* expand_shtrassen_tbb(double* A, double* B, int n) {
 
     double* new_A = new double[new_size*new_size];
     double* new_B = new double[new_size*new_size];
-    tbb::parallel_for(0, new_size, [&](size_t i) {
+    tbb::parallel_for(0, new_size, [&](int i) {
       for (int j = 0; j < new_size; ++j) {
         if (i < n && j < n) {
           new_A[i*new_size + j] = A[i*n + j];
@@ -386,7 +386,7 @@ double* expand_shtrassen_tbb(double* A, double* B, int n) {
     res_s = shtrassen_mul_tbb(new_A, new_B, new_size);
 
     double* aligned_mat = new double[n*n];
-    tbb::parallel_for(0, n, [&](size_t i) {
+    tbb::parallel_for(0, n, [&](int i) {
       for (int j = 0; j < n; ++j)
         aligned_mat[i*n + j] = res_s[i*new_size + j];
     });
