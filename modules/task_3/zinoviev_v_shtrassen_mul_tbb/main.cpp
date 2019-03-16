@@ -422,7 +422,7 @@ int main(int argc, char** argv) {
   if (argc > 1) {
     n = atoi(argv[1]);
   } else {
-    n = uni_int(rd);
+    n = 100;  //  uni_int(rd);
   }
   std::cout << "n = " << n << std::endl;
   int size = n * n;
